@@ -17,15 +17,15 @@ public class app {
 		SparkConf conf = new SparkConf().setMaster("local").setAppName("exam");
 		JavaSparkContext ctx = new JavaSparkContext(conf);
 			
-		// Load text file into RDD according of month extraction
-		JavaRDD<String> lineRDD = ctx.textFile("C:/Users/villa/Downloads/Desafio/access_log_*95");
+		// Load all text file into RDD according of year extraction, in this case it's about Jul and Aug.
+		JavaRDD<String> lineRDD = ctx.textFile("access_log_*95").cache();
 		
 		
 		// Group lines based on host info
 		JavaPairRDD<String, Integer> groupByHostRDD = lineRDD
 				.mapToPair(s -> new Tuple2<String, Integer>(s.split(" ")[0], 1)); 
 		
-		// Calculate the number of distinct																					// hosts
+		// Calculate the number of distinct	hosts
 		JavaPairRDD<String, Integer> hostGroupedRDD = groupByHostRDD.reduceByKey((x, y) -> x + y);
 
 		System.out.println("# unique hosts: " + hostGroupedRDD.count());
@@ -74,7 +74,7 @@ public class app {
 
 		// --------------------------------------------------------------------------------
 
-		// Total bytes 
+
 
 		
 		ctx.close();
