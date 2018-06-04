@@ -46,3 +46,14 @@ val counts = textFile.flatMap(line => line.split(" "))
 <i>-- Criação de arquivo texto com a lista da quantidade de palavras.</i>
 
 counts.saveAsTextFile("hdfs://...")
+
+<br>
+<br>
+<br>
+
+<b>Referências</b>
+1. http://spark.apache.org/docs/latest/rdd-programming-guide.html "RDD Programming Guide" Consultado em 3 de junh de 2018.
+
+2. https://www.infoq.com/br/articles/mapreduce-vs-spark "Um comparativo entre MapReduce e Spark para analise de Big Data" Consultado em 3 de junho de 2018.
+
+3. https://www.devmedia.com.br/introducao-ao-apache-spark/34178 "Introdução ao Apache Spark" Consultado em 3 de junho de 2018.
