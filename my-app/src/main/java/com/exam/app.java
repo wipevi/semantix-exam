@@ -28,7 +28,7 @@ public class app {
 		// Calculate the number of distinct																					// hosts
 		JavaPairRDD<String, Integer> hostGroupedRDD = groupByHostRDD.reduceByKey((x, y) -> x + y);
 
-		//System.out.println("# unique hosts: " + hostGroupedRDD.count());
+		System.out.println("# unique hosts: " + hostGroupedRDD.count());
 		
 		
 		
@@ -37,27 +37,27 @@ public class app {
 		// Filter the total value of error 404 in http request log = 20901
 		JavaRDD<String> errorFilteredRDD = lineRDD.filter(s -> s.contains(" 404 "));
 
-		// System.out.println("qtde linhas filtradas " + errorFilteredRDD.count());
+		System.out.println("qtde linhas filtradas " + errorFilteredRDD.count());
 
 		
 		
 		// --------------------------------------------------------------------------------
 
 		// Top 5 URLs with 404 error 
-		//JavaPairRDD<String, Integer> groupByerrorRDD = errorFilteredRDD
-		//		.mapToPair(s -> new Tuple2<String, Integer>(s.split(" ")[0], 1));
+		JavaPairRDD<String, Integer> groupByerrorRDD = errorFilteredRDD
+				.mapToPair(s -> new Tuple2<String, Integer>(s.split(" ")[0], 1));
 		
 		// Calculate the number of distinct hosts
-		//JavaPairRDD<String, Integer> errorGroupedRDD = groupByerrorRDD.reduceByKey((x, y) -> x + y);
+		JavaPairRDD<String, Integer> errorGroupedRDD = groupByerrorRDD.reduceByKey((x, y) -> x + y);
 
 		// Invert the values of key/value to value/key, it's needed to sort by value which represents top 5 hosts 
-		//JavaPairRDD<Integer, String> invertedRDD = errorGroupedRDD.mapToPair(t -> new Tuple2<Integer, String>(t._2, t._1));
-		//List<Tuple2<Integer, String>> sortedList = invertedRDD.sortByKey(false).take(5);
+		JavaPairRDD<Integer, String> invertedRDD = errorGroupedRDD.mapToPair(t -> new Tuple2<Integer, String>(t._2, t._1));
+		List<Tuple2<Integer, String>> sortedList = invertedRDD.sortByKey(false).take(5);
 
-		//for (Tuple2<Integer, String> list : sortedList) {
-		//	System.out.println("host = " + list._2());
-		//	System.out.println("total error 404 = " + list._1());
-		//}
+		for (Tuple2<Integer, String> list : sortedList) {
+			System.out.println("host = " + list._2());
+			System.out.println("total error 404 = " + list._1());
+		}
 		
 		/* Result: 
 			host = hoohoo.ncsa.uiuc.edu
@@ -75,13 +75,7 @@ public class app {
 		// --------------------------------------------------------------------------------
 
 		// Total bytes 
-		
-		/*
-		JavaPairRDD<String, Integer> b = lineRDD.
-				.mapToPair(s -> new Tuple2<String, Integer>(s.split(" ")[0], 1));
-		
-		System.out.println(b.collect());
-		*/
+
 		
 		ctx.close();
 
