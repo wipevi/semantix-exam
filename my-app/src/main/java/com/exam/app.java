@@ -74,7 +74,34 @@ public class app {
 
 		// --------------------------------------------------------------------------------
 
+		// Total bytes 
+		JavaPairRDD<String, Integer> bytesLineVal = lineRDD
+				.mapToPair(s -> new Tuple2<String, Integer>(s.split("\n")[0], 1));
+		
+		//System.out.println(bytesLineVal.take(2));
+		JavaPairRDD<String, Integer> bytesPair = bytesLineVal
+				.mapToPair(t -> new Tuple2<String, Integer>(t._1, t._2));
+		List<Tuple2<String, Integer>> bytesList = bytesPair.collect(); 
+		
+		r = Pattern.compile("[0-9]");
+		for (Tuple2<String, Integer> list : bytesList) {
+			//Retrieve the index of field which represents bytes value
+			bytesIdx = list._1().split(" ").length -1;
+			
+			//Get the string value of bytes
+			bytesStr = list._1().split(" ")[bytesIdx];
+			Matcher isByteNumeric = r.matcher(bytesStr);
+			
+			// Check if value is numeric based on regex pattern
+			if (isByteNumeric.find())
+			{
+				totalBytes += new Integer(bytesStr).longValue();
+			}
+		}
+		
+		System.out.println("Total Bytes = " + totalBytes);
 
+		// --------------------------------------------------------------------------------
 
 		
 		ctx.close();
